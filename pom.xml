@@ -18,6 +18,7 @@
         <module>service</module>
         <module>framework/core</module>
         <module>framework/web</module>
+        <module>framework/cache</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

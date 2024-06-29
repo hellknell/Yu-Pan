@@ -1,6 +1,8 @@
 package com.Yu.Pan.web.controller;
 
+
 import com.Yu.Pan.core.exception.BizException;
+import com.Yu.Pan.core.exception.FrameworkException;
 import com.Yu.Pan.core.response.R;
 import com.Yu.Pan.core.response.ResponseCode;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,13 @@ public class ControllerExceptionHandler {
     public R<Object> handleException(BizException e) {
         log.error("系统异常，请联系管理员", e);
         return new R<>(e.getCode(), e.getMsg());
+
+    }
+
+    @ExceptionHandler(FrameworkException.class)
+    public R handleException(FrameworkException e) {
+        log.error("系统异常，请联系管理员", e);
+        return new R<>(ResponseCode.ERROR.getCode(), e.getMessage());
 
     }
 

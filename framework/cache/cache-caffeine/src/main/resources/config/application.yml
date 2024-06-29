@@ -1,0 +1,6 @@
+yu:
+  pan:
+    caffeine:
+      allowNullValues: true
+      initialCapacity: 100
+      maxCapacity: 10000

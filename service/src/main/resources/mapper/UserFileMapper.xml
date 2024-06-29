@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Yu.Pan.service.mapper.UserFileMapper">
+  <resultMap id="BaseResultMap" type="com.Yu.Pan.service.domain.UserFile">
+    <id column="file_id" jdbcType="BIGINT" property="fileId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="real_file_id" jdbcType="BIGINT" property="realFileId" />
+    <result column="filename" jdbcType="VARCHAR" property="filename" />
+    <result column="folder_flag" jdbcType="BIT" property="folderFlag" />
+    <result column="file_type" jdbcType="CHAR" property="fileType" />
+    <result column="file_size_desc" jdbcType="VARCHAR" property="fileSizeDesc" />
+    <result column="del_flag" jdbcType="BIT" property="delFlag" />
+    <result column="create_user" jdbcType="BIGINT" property="createUser" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_user" jdbcType="BIGINT" property="updateUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    file_id, user_id, parent_id, real_file_id, filename, folder_flag, file_type, file_size_desc, 
+    del_flag, create_user, create_time, update_user, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_file
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_file
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.Yu.Pan.service.domain.UserFile">
+    insert into user_file (file_id, user_id, parent_id, 
+      real_file_id, filename, folder_flag, 
+      file_type, file_size_desc, del_flag, 
+      create_user, create_time, update_user, 
+      update_time)
+    values (#{fileId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, 
+      #{realFileId,jdbcType=BIGINT}, #{filename,jdbcType=VARCHAR}, #{folderFlag,jdbcType=BIT}, 
+      #{fileType,jdbcType=CHAR}, #{fileSizeDesc,jdbcType=VARCHAR}, #{delFlag,jdbcType=BIT}, 
+      #{createUser,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.Yu.Pan.service.domain.UserFile">
+    insert into user_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fileId != null">
+        file_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="realFileId != null">
+        real_file_id,
+      </if>
+      <if test="filename != null">
+        filename,
+      </if>
+      <if test="folderFlag != null">
+        folder_flag,
+      </if>
+      <if test="fileType != null">
+        file_type,
+      </if>
+      <if test="fileSizeDesc != null">
+        file_size_desc,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fileId != null">
+        #{fileId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="realFileId != null">
+        #{realFileId,jdbcType=BIGINT},
+      </if>
+      <if test="filename != null">
+        #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="folderFlag != null">
+        #{folderFlag,jdbcType=BIT},
+      </if>
+      <if test="fileType != null">
+        #{fileType,jdbcType=CHAR},
+      </if>
+      <if test="fileSizeDesc != null">
+        #{fileSizeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.Yu.Pan.service.domain.UserFile">
+    update user_file
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="realFileId != null">
+        real_file_id = #{realFileId,jdbcType=BIGINT},
+      </if>
+      <if test="filename != null">
+        filename = #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="folderFlag != null">
+        folder_flag = #{folderFlag,jdbcType=BIT},
+      </if>
+      <if test="fileType != null">
+        file_type = #{fileType,jdbcType=CHAR},
+      </if>
+      <if test="fileSizeDesc != null">
+        file_size_desc = #{fileSizeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.Yu.Pan.service.domain.UserFile">
+    update user_file
+    set user_id = #{userId,jdbcType=BIGINT},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      real_file_id = #{realFileId,jdbcType=BIGINT},
+      filename = #{filename,jdbcType=VARCHAR},
+      folder_flag = #{folderFlag,jdbcType=BIT},
+      file_type = #{fileType,jdbcType=CHAR},
+      file_size_desc = #{fileSizeDesc,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=BIT},
+      create_user = #{createUser,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </update>
+  <select id="list" parameterType="com.Yu.Pan.core.generator.help.MyBatisWrapper" resultMap="BaseResultMap">
+        <include refid="listSql"/>
+    </select>
+    <sql id="listSql">
+        select
+        <if test="selectBuilder == null">
+            *
+        </if>
+        <if test="selectBuilder != null">
+            <trim prefixOverrides="," suffixOverrides=",">
+                ${selectBuilder}
+            </trim>
+        </if>
+        from user_file
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="groupBySql != null">
+            group by ${groupBySql}
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="rows != null">
+            <if test="offset != null">
+                limit ${offset}, ${rows}
+            </if>
+            <if test="offset == null">
+                limit ${rows}
+            </if>
+        </if>
+    </sql>
+  <sql id="Example_Where_Clause">
+   <where>
+            <trim prefixOverrides="and | or">
+                <foreach collection="oredCriteria" item="criteria">
+                    <if test="criteria.valid">
+                        <if test="criteria.andOrOr">
+                            and
+                        </if>
+                        <if test="!criteria.andOrOr">
+                            or
+                        </if>
+                        <trim prefix="(" prefixOverrides="and | or" suffix=")">
+                            <foreach collection="criteria.criteria" item="criterion">
+                                <choose>
+                                    <when test="criterion.noValue">
+                                        ${criterion.condition}
+                                    </when>
+                                    <when test="criterion.singleValue">
+                                        ${criterion.condition} #{criterion.value, jdbcType=${criterion.jdbcType}}
+                                    </when>
+                                    <when test="criterion.betweenValue">
+                                        ${criterion.condition} #{criterion.value, jdbcType=${criterion.jdbcType}} and #{criterion.secondValue, jdbcType=${criterion.jdbcType}}
+                                    </when>
+                                    <when test="criterion.listValue">
+                                        ${criterion.condition}
+                                        <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                                 separator=",">
+                                            #{listItem, jdbcType=${criterion.jdbcType}}
+                                        </foreach>
+                                    </when>
+                                </choose>
+                            </foreach>
+                        </trim>
+                    </if>
+                </foreach>
+            </trim>
+        </where></sql>
+    <select id="topOne" parameterType="com.Yu.Pan.core.generator.help.MyBatisWrapper" resultMap="BaseResultMap">
+    select
+    <if test="selectBuilder != null">
+      <trim prefixOverrides="," suffixOverrides=",">
+         ${selectBuilder} 
+      </trim>
+    </if>
+    from user_file
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    limit 1
+  </select>
+
+  <select id="count" parameterType="com.Yu.Pan.core.generator.help.MyBatisWrapper" resultType="java.lang.Integer">
+        <include refid="countSql"/>
+    </select>
+    <sql id="countSql">
+        select count(*) total_count from user_file
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </sql>
+  <update id="updateField" parameterType="com.Yu.Pan.core.generator.help.MyBatisWrapper">
+    update user_file 
+    set 
+    <trim prefixOverrides="," suffixOverrides=",">
+         ${example.updateSql} 
+      </trim>
+     <if test="example.updateSql != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <sql id="Update_By_Example_Where_Clause">
+   <where>
+            <trim prefixOverrides="and | or">
+                <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                    <if test="criteria.andOrOr">
+                        and
+                    </if>
+                    <if test="!criteria.andOrOr">
+                        or
+                    </if>
+                    <if test="criteria.valid">
+                        <trim prefix="(" prefixOverrides="and" suffix=")">
+                            <foreach collection="criteria.criteria" item="criterion">
+                                <choose>
+                                    <when test="criterion.noValue">
+                                        ${criterion.condition}
+                                    </when>
+                                    <when test="criterion.singleValue">
+                                        ${criterion.condition} #{criterion.value, jdbcType=${criterion.jdbcType}}
+                                    </when>
+                                    <when test="criterion.betweenValue">
+                                        ${criterion.condition} #{criterion.value, jdbcType=${criterion.jdbcType}} and #{criterion.secondValue, jdbcType=${criterion.jdbcType}}
+                                    </when>
+                                    <when test="criterion.listValue">
+                                        ${criterion.condition}
+                                        <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                                 separator=",">
+                                            #{listItem, jdbcType=${criterion.jdbcType}}
+                                        </foreach>
+                                    </when>
+                                </choose>
+                            </foreach>
+                        </trim>
+                    </if>
+                </foreach>
+            </trim>
+        </where></sql>
+   <update id="updateFieldBatch" parameterType="java.util.List">
+           <foreach collection="list" index="index" item="example" separator=";">
+               update user_file 
+                   set 
+               <trim prefixOverrides="," suffixOverrides=",">
+                   ${example.updateSql} 
+               </trim>
+               <if test="example != null">
+                   <include refid="Update_By_Example_Where_Clause" />
+               </if>           </foreach>
+  </update>
+    <select id="get" parameterType="com.Yu.Pan.core.generator.help.MyBatisWrapper" resultMap="BaseResultMap">
+        select
+    <if test="selectBuilder != null">
+      <trim prefixOverrides="," suffixOverrides=",">
+         ${selectBuilder} 
+      </trim>
+ </if>
+    from user_file
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+</mapper>
