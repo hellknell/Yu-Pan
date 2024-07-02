@@ -12,9 +12,7 @@ import java.io.Serializable;
 @Data
 public class CreateFolderContext implements Serializable {
     private static final long serialVersionUID = 1L;
-
     private Long userId;
-
     private Long parentId;
     private String folderName;
 }

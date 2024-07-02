@@ -15,8 +15,8 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @EnableCaching
-@MapperScan(basePackages = YuPanConstants.BASE_COMPONENT_SCAN_PATH + ".service.mapper")
-@ComponentScan(basePackages = YuPanConstants.BASE_COMPONENT_SCAN_PATH)
+@MapperScan(basePackages = "com.Yu.Pan.service.mapper")
+@ComponentScan(basePackages = "com.Yu.Pan")
 public class YuPanApplication {
     public static void main(String[] args) {
         SpringApplication.run(YuPanApplication.class, args);

@@ -12,26 +12,22 @@ import java.io.Serializable;
 /**
  * 功能:
  * 作者:何宇
- * 日期：2024/6/29 11:10
- *
- * @author lenovo
+ * 日期：2024/7/2 15:44
  */
 @Data
-@ApiModel("注册用户")
-public class UserRegReq implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @ApiModelProperty(value = "用户名", required = true)
+@ApiModel("忘记密码--校验密保答案")
+public class CheckAnswerReq implements Serializable {
+    private final static long serialVersionUID = 1L;
+    @ApiModelProperty("用户名")
     @NotBlank(message = "用户名不能为空")
     @Pattern(regexp = "^[a-zA-Z0-9]{6,16}$", message = "用户名格式错误")
     private String username;
-    @ApiModelProperty(value = "密码", required = true)
-    @NotBlank(message = "密码不能为空")
-    @Length(min = 8, max = 16, message = "请输入长度为8-16位的密码")
-    private String password;
+
+    @ApiModelProperty(value = "密保", required = true)
     @NotBlank(message = "密保问题不能为空")
-    @Length(max = 100, message = "密保问题长度不能超过100")
-    @ApiModelProperty(value = "密保问题", required = true)
+    @Length(max = 100, message = "密保答案长度不能超过100")
     private String question;
+
     @NotBlank(message = "密保答案不能为空")
     @Length(max = 100, message = "密保答案长度不能超过100")
     @ApiModelProperty(value = "密保答案", required = true)

@@ -1,7 +1,7 @@
 package com.Yu.Pan.service.domain;
+import com.Yu.Pan.core.generator.help.DbField;
+import com.Yu.Pan.core.generator.help.FieldResult;
 
-import com.heyu.train.generator.generator.help.DbField;
-import com.heyu.train.generator.generator.help.FieldResult;
 import java.util.Collections;
 
 public class FileField {

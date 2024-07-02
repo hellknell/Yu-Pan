@@ -29,6 +29,11 @@ public class R<T> {
         this.message = message;
     }
 
+    public R(Integer code, T data) {
+        this.code = code;
+        this.data = data;
+    }
+
     public R(Integer code, Map<String, String> errorMessage) {
         this.code = code;
         this.errorMessage = errorMessage;
@@ -54,12 +59,9 @@ public class R<T> {
         return new R<T>(ResponseCode.SUCCESS.getCode());
     }
 
-    public static <T> R<T> success(String message) {
-        return new R<T>(ResponseCode.SUCCESS.getCode(), message);
-    }
 
     public static <T> R<T> success(T data) {
-        return new R<>(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMsg(), data);
+        return new R(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMsg(), data);
     }
 
     public static <T> R<T> error() {

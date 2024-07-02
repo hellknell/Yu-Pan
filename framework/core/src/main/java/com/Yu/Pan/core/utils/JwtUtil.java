@@ -20,10 +20,11 @@ import java.util.HashMap;
 @Component
 public class JwtUtil {
     public static String key = "2vdvv453";
-    public static String creatToken(String username, Long id) {
+
+    public static String creatToken(String username, Long id, int offset) {
         HashMap<String, Object> map = new HashMap<>();
         DateTime now = DateTime.now();
-        DateTime expireTime = now.offsetNew(DateField.HOUR, 3);
+        DateTime expireTime = now.offsetNew(DateField.MINUTE, offset);
         map.put(JWTPayload.ISSUED_AT, now);
         map.put(JWTPayload.EXPIRES_AT, expireTime);
         map.put(JWTPayload.NOT_BEFORE, now);

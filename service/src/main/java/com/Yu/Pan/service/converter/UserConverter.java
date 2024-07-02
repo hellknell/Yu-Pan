@@ -1,11 +1,11 @@
 package com.Yu.Pan.service.converter;
 
-import com.Yu.Pan.service.context.UserContext;
+import com.Yu.Pan.service.context.*;
 import com.Yu.Pan.service.domain.User;
-import com.Yu.Pan.service.req.UserRegReq;
+import com.Yu.Pan.service.req.*;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
 /**
  * 功能:
@@ -15,14 +15,21 @@ import org.mapstruct.factory.Mappers;
 /*
 用户实体转化工具类
  */
+@Component
 @Mapper(componentModel = "spring")
 public interface UserConverter {
     UserConverter INSTANCE = Mappers.getMapper(UserConverter.class);
 
     UserContext toUserContext(UserRegReq userRegReq);
 
-
-    @Mapping(target = "password", ignore = true)
+    //    @Mapping(target = "password", ignore = true)
     User toUser(UserContext userContext);
+
+    UserLoginContext toUserLoginContext(UserLoginReq req);
+
+    CheckNameContext toCheckNameContext(CheckNameReq req);
+
+    CheckAnswerContext toCheckAnswerContext(CheckAnswerReq req);
+    ResetPasswordContext toResetPasswordContext(ResetPasswordReq req);
 
 }

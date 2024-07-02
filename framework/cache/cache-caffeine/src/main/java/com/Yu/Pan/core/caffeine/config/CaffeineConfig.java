@@ -25,8 +25,6 @@ import javax.annotation.Resource;
 public class CaffeineConfig {
     @Resource
     private CaffeineProperties caffeineProperties;
-
-
     @Bean
     public CacheManager caffeineCacheManager() {
         CaffeineCacheManager ccm = new CaffeineCacheManager(CacheConstants.YU_PAN_CACHE);
