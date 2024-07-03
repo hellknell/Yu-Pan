@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>com.Yu.Pan</groupId>
-            <artifactId>cache-caffeine</artifactId>
+            <artifactId>cache-redis</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>

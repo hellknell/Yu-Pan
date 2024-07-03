@@ -25,7 +25,7 @@ public class ResetPasswordReq implements Serializable {
 
     @Length(min = 8, max = 16, message = "请输入长度为8-16位的密码")
     @ApiModelProperty("新密码")
-    private String password;
+    private String newPassword;
 
     @ApiModelProperty("token")
     private String token;

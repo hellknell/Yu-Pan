@@ -18,5 +18,4 @@ public interface YuPanConstants {
     String TRUE_STR = "true";
     String FALSE_STR = "false";
     String BASE_COMPONENT_SCAN_PATH = "com.Yu.Pan";
-
 }

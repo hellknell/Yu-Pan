@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -37,7 +36,6 @@ public class UserController {
         userService.register(userContext);
         return R.success();
     }
-
     @ApiOperation(value = "用户登录")
     @PostMapping("/login")
     public R<String> login(@Validated @RequestBody UserLoginReq req) throws NoSuchAlgorithmException {
@@ -47,15 +45,13 @@ public class UserController {
 
     @ApiOperation(value = "查询用户信息")
     @GetMapping("/")
-    public R<UserInfoResp> info() throws NoSuchAlgorithmException {
-
+    public R<UserInfoResp> info()  {
         Long userId = LoginMemberContext.getUserId();
-
         return R.success(userService.info(userId));
     }
 
     @ApiOperation(value = "用户登出")
-    @GetMapping("/exit")
+    @PostMapping("/exit")
     public R logout() {
         Long userId = LoginMemberContext.getUserId();
         userService.exit(userId);
@@ -77,10 +73,20 @@ public class UserController {
     }
 
     @ApiOperation(value = "用户忘记密码--重置密码")
-    @PutMapping("/password/reset")
+    @PostMapping("/password/reset")
     public R resetPassword(@Validated @RequestBody ResetPasswordReq req) {
         ResetPasswordContext resetPasswordContext = UserConverter.INSTANCE.toResetPasswordContext(req);
         userService.resetPassword(resetPasswordContext);
+        return R.success();
+    }
+
+    @ApiOperation(value = "用户在线修改密码")
+    @PostMapping("/password/change")
+    public R changePassword(@Validated @RequestBody ChangePasswordReq req) throws NoSuchAlgorithmException {
+        ChangePasswordContext context = UserConverter.INSTANCE.toChangePasswordContext(req);
+        context.setUserId(LoginMemberContext.getUserId());
+        log.info("id:{}", LoginMemberContext.getUserId());
+        userService.changePassword(context);
         return R.success();
     }
 }

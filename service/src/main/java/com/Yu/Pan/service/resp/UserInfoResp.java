@@ -1,5 +1,7 @@
 package com.Yu.Pan.service.resp;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -12,7 +14,9 @@ import java.io.Serializable;
 @Data
 public class UserInfoResp implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Long username;
+    private String username;
+    private String avatar;
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long rootFileId;
     private String rootFilename;
 }

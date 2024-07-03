@@ -18,6 +18,10 @@ import com.Yu.Pan.service.converter.UserConverter;
 import com.Yu.Pan.service.domain.User;
 import com.Yu.Pan.service.domain.UserField;
 import com.Yu.Pan.service.domain.UserFile;
+import com.Yu.Pan.service.domain.UserFileField;
+import com.Yu.Pan.service.enums.DelFlagEnum;
+import com.Yu.Pan.service.enums.FolderFlagEnum;
+import com.Yu.Pan.service.mapper.UserFileMapper;
 import com.Yu.Pan.service.mapper.UserMapper;
 import com.Yu.Pan.service.resp.UserInfoResp;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +46,7 @@ import java.security.NoSuchAlgorithmException;
 public class UserService {
     final UserMapper userMapper;
     final UserFileService userFileService;
+    final UserFileMapper userFileMapper;
     @Resource
     CacheManager cacheManager;
 
@@ -66,11 +71,19 @@ public class UserService {
         MyBatisWrapper<User> wrapper = new MyBatisWrapper<>();
         wrapper.select(UserField.Avatar, UserField.Username).whereBuilder().andEq(UserField.setId(userId));
         User user = userMapper.topOne(wrapper);
+        if (ObjectUtil.isNull(user)) {
+            throw new BizException(ResponseCode.USER_NOT_EXIST);
+        }
         MyBatisWrapper<UserFile> wrapper1 = new MyBatisWrapper<>();
-//        wrapper1.select(UserFileField.ParentId,UserFileField.Filename
-        return null;
+        wrapper1.select(UserFileField.FileId, UserFileField.Filename).whereBuilder()
+                .andEq(UserFileField.setDelFlag(DelFlagEnum.NO.getFlag()))
+                .andEq(UserFileField.setFolderFlag(FolderFlagEnum.TRUE.getFlag()))
+                .andEq(UserFileField.setUserId(userId))
+                .andEq(UserFileField.setParentId(CreateFolderConstants.TOP_PARENT_ID));
+        UserFile userFile = userFileMapper.topOne(wrapper1);
+        UserInfoResp userInfoResp = UserConverter.INSTANCE.toUserInfoResp(user, userFile);
+        return userInfoResp;
     }
-
     public void exit(Long userId) {
         try {
             Cache cache = cacheManager.getCache(CacheConstants.YU_PAN_CACHE);
@@ -164,7 +177,6 @@ public class UserService {
         context.setAccessToken(token);
     }
 
-
     public String checkAnswer(CheckAnswerContext context) {
         if (check(context)) {
             generateAndSaveToken(context);
@@ -193,16 +205,17 @@ public class UserService {
         checkToken(resetPasswordContext);
         resetNewPassword(resetPasswordContext);
     }
+
     private void resetNewPassword(ResetPasswordContext resetPasswordContext) {
         String username = resetPasswordContext.getUsername();
         MyBatisWrapper<User> wrapper = new MyBatisWrapper<>();
-        wrapper.select(UserField.Id).whereBuilder().andEq(UserField.setUsername(username));
+        wrapper.select(UserField.Id, UserField.Salt).whereBuilder().andEq(UserField.setUsername(username));
         User user = userMapper.topOne(wrapper);
         if (ObjectUtil.isNull(user)) {
             throw new BizException(ResponseCode.USER_NOT_EXIST);
         }
         try {
-            user.setPassword(PasswordUtil.encryptPassword(resetPasswordContext.getPassword(), PasswordUtil.genSalt()));
+            user.setPassword(PasswordUtil.encryptPassword(resetPasswordContext.getNewPassword(), user.getSalt()));
         } catch (NoSuchAlgorithmException e) {
             throw new BizException("密码加密失败");
         }
@@ -220,5 +233,39 @@ public class UserService {
         if (!StrUtil.equals(user.getUsername(), resetPasswordContext.getUsername())) {
             throw new BizException("token异常");
         }
+    }
+
+    public void changePassword(ChangePasswordContext context) throws NoSuchAlgorithmException {
+        checkOldPassword(context);
+        setNewPassword(context);
+        exit(context.getUserId());
+    }
+
+    private void checkOldPassword(ChangePasswordContext context) {
+        String oldPassword = context.getPassword();
+        MyBatisWrapper<User> wrapper = new MyBatisWrapper<>();
+        wrapper.select(UserField.Id, UserField.Password, UserField.Salt).whereBuilder().andEq(UserField.setId(context.getUserId()));
+        User user = userMapper.topOne(wrapper);
+        if (ObjectUtil.isNull(user)) {
+
+            throw new BizException(ResponseCode.USER_NOT_EXIST);
+        }
+        try {
+            if (!ObjectUtil.equals(user.getPassword(), PasswordUtil.encryptPassword(oldPassword, user.getSalt()))) {
+                throw new BizException("原密码错误");
+            } else {
+                context.setUser(user);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            throw new BizException("密码加密失败");
+        }
+
+    }
+
+    private void setNewPassword(ChangePasswordContext context) throws NoSuchAlgorithmException {
+        User user = context.getUser();
+        user.setPassword(PasswordUtil.encryptPassword(context.getNewPassword(), user.getSalt()));
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }

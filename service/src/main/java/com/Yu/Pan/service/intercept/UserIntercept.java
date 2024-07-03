@@ -1,7 +1,6 @@
 package com.Yu.Pan.service.intercept;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import com.Yu.Pan.cache.core.constants.CacheConstants;
@@ -28,12 +27,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RequiredArgsConstructor
 @Slf4j
-        @Component
-        public class UserIntercept implements HandlerInterceptor {
-        final CacheManager cacheManager;
+@Component
+public class UserIntercept implements HandlerInterceptor {
+    final CacheManager cacheManager;
 
-        @Override
-        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
         log.info("requestURI:{}", requestURI);
         String token = request.getHeader("Authorization");
@@ -45,16 +44,17 @@ import javax.servlet.http.HttpServletResponse;
             throw new BizException(ResponseCode.NO_LOGIN);
         }
         if (StrUtil.isNotBlank(token)) {
+            if (!JwtUtil.validateToken(token)) {
+                throw new BizException(ResponseCode.INVAILD_TOKEN);
+            }
             log.info("当前用户登录token:{}", token);
             Cache cache = cacheManager.getCache(CacheConstants.YU_PAN_CACHE);
             JSONObject member = JwtUtil.getMember(token);
             UserResp loginUser = BeanUtil.toBean(member, UserResp.class);
             Long id = loginUser.getId();
             log.info("userId:{}", id);
-            Object token1 = cache.get(UserConstants.USER_LOGIN_PREFIX + id);
-            if (!ObjectUtil.equals(token, token1)) {
-                throw new BizException(ResponseCode.INVAILD_TOKEN);
-            }
+            Cache.ValueWrapper valueWrapper = cache.get(UserConstants.USER_LOGIN_PREFIX + id);
+            log.info("token1:{}", valueWrapper.get());
             log.info("当前用户登信息:{}", loginUser);
             LoginMemberContext.setLoginUser(loginUser);
         }

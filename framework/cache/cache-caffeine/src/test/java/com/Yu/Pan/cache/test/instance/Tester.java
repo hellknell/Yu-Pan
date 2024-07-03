@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
  * 日期：2024/6/28 19:15
  */
 @Slf4j
-@Component
-public class Tester {
-    int i = 0;
+    @Component
+    public class Tester {
+        int i = 0;
 
     @Cacheable(cacheNames = CacheConstants.YU_PAN_CACHE, key = "#name", sync = true)
     public String get(String name) {

@@ -38,26 +38,27 @@ public class ControllerExceptionHandler {
         return new R<>(e.getCode(), e.getMsg());
 
     }
+
     @ExceptionHandler(FrameworkException.class)
     public R handleException(FrameworkException e) {
         log.error("系统异常，请联系管理员", e);
         return new R<>(ResponseCode.ERROR.getCode(), e.getMessage());
 
     }
+
     @ExceptionHandler(BindException.class)
     public R<Object> handleException(BindException e) {
         log.error("参数校验异常，请联系管理员", e.getBindingResult().getFieldErrors().get(0).getDefaultMessage());
         return new R<>(ResponseCode.ERROR.getCode(), e.getBindingResult().getFieldErrors().get(0).getDefaultMessage());
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected R handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+    public R handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         log.error("ParameterException:", ex);
         // 返回响应对象
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(p -> {
-            errors.put(p.getField(), p.getDefaultMessage());
-        });
-        return R.error(ResponseCode.PARAMS_ERROR.getCode(), errors);
+        String defaultMessage = ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
+        return R.error(ResponseCode.PARAMS_ERROR.getCode(), defaultMessage);
     }
 
 

@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class ResetPasswordContext {
     private String username;
-    private String password;
+    private String newPassword;
     private String token;
 
 }
